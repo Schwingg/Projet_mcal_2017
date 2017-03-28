@@ -28,7 +28,7 @@ type action =
   | Simultaneous of action list (* simultaneous actions on multiple bands *)
   | Nop (* no operation, needed by zip *)
 
-
+(********************************************************************************)
       
 module Reading =
   (struct
@@ -43,6 +43,7 @@ module Reading =
 		    
   end)
 
+(********************************************************************************)
 
 module Writing =
   (struct
@@ -59,6 +60,7 @@ module Writing =
 		
   end)
 
+(******************************************************************************)
     
 module Moving =
   (struct
@@ -71,7 +73,7 @@ module Moving =
 		
   end)
 
-    
+(******************************************************************************)
 	  
 module Action =
   (struct
