@@ -2,3 +2,5 @@
 *.cmo
 src/run
 src/_log/
+.Rhistory
+src/.nfs*
