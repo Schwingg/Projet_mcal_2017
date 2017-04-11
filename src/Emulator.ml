@@ -36,6 +36,14 @@ type simulator  =
 type simulators = simulator list
 
 
+
+
+
+
+
+
+(*////////////////////////////////////////////////////////////////////////*)
+
 module Simulator =
   (struct
 
@@ -132,6 +140,20 @@ module Simulator =
   end)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 open State
 open Symbol
 open Alphabet
@@ -140,6 +162,13 @@ open Action
 open Band
 open Transition
 open Turing_Machine
+
+
+
+
+
+
+(*////////////////////////////////////////////////////////////////////////*)
 
 (* An example of a useless but correct translation that splits the effect of a transition into three steps
 
@@ -220,6 +249,18 @@ module Split =
 
 
 
+
+
+
+
+
+
+
+
+
+
+(*////////////////////////////////////////////////////////////////////////*)
+
 module Binary =
 struct
 
@@ -241,11 +282,60 @@ struct
       List.map (fun symbol -> (symbol, symbol_to_bits symbol)) alphabet.symbols
 
 
+
+
+
+
   (** MODIFIED 27/03/2107 *)
-  let encode_with : encoding -> Band.t list -> Band.t list
+
+(*attention peut etre que l'ordre des fonction n'est pas le bon*)
+
+let rec tradSym:encoding->Symbol.t->Symbol.t list (*Bits.t*)
+  = fun encoding s ->
+    match encoding with
+    |[]->failwith "msg"
+    |(sym,vec)::suite->if(sym=s)then vec else (tradSym suite s)
+
+
+let rec traduire_SymList : encoding->Symbol.t list -> Symbol.t list
+	= fun encoding band ->
+		match band with
+		| []->[]
+		| s::suite->(tradSym encoding s)@(traduire_SymList encoding suite)
+
+
+let traduire_band : encoding ->band->band=
+	fun encoding band ->
+		let heads = (tradSym encoding band.head)
+			in match heads with
+			|h::suite ->
+		{band with
+			left = traduire_SymList encoding band.left;
+			head = h;
+			right = suite @ traduire_SymList encoding band.right;
+
+		}
+
+
+
+  let rec encode_with : encoding -> Band.t list -> Band.t list
   (* PROJET 2017: modifiez ce code -> *)
-    = fun encoding ->
-      (fun bands -> bands)
+    = fun encoding bandListInit ->
+      match bandListInit with
+      |[]->[]
+      |b::suite-> (traduire_band encoding b)::(encode_with encoding suite )
+     (* (fun bands -> bands) *)
+     
+
+
+
+
+        
+(*{ left=[] ; head=B ; right=[] ; color=Color.COL"LightGray" ; alphabet=Alphabet.empty}*)
+
+
+
+
 
 
   (* REVERSE TRANSLATION *)
