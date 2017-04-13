@@ -84,10 +84,14 @@ module Band =
 
     (* EQUIVALENCE *)
 		    
-    let rec (remove_left_blanks: Symbol.t list -> Symbol.t list) = fun symbols ->
-	  match symbols with
-	  | [] -> []
-	  | s::ymbols -> if s=B then remove_left_blanks ymbols else s::(remove_left_blanks ymbols)
+        let rec (remove_left_blanks: Symbol.t list -> Symbol.t list) = fun symbols ->
+      match symbols with
+      | [] -> []
+      | s::ymbols ->
+        if s=B then remove_left_blanks ymbols
+        (* BUG FIXED by Adrian Amaglio 05/04/2017
+         *  else s::(remove_left_blanks ymbols) -- removes all blanks
+         *) else symbols
 
     open Tricks
 									 
