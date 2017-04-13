@@ -88,6 +88,45 @@ let (busy_beaver: Turing_Machine.t -> Configuration.t) = fun bb ->
 	let band = Band.make alphabet [] in
 	  let cfg = Configuration.make bb [ band ] in
 	    Execution.log_run cfg 
+	    
+	    
+(* bon parentesage simple*)
+let (question1Demo1: unit -> Configuration.t) = fun () ->
+      let alphabet = Alphabet.make [B;Z;U;O;C] in  (*O pour open C pour close*)
+	let band1 = Band.make alphabet [O;Z;U;C] (*bande a tester*)
+	and band2 = Band.make alphabet [B;B;B;B;B;B;B;B] (*bande de travail*)
+	and band3 = Band.make alphabet [B;B;B;B;B;B;B;B] in (*bande de travail*)
+	let cfg = Configuration.make Turing_Machine.test_parenthesage [ band1 ; band2 ; band3] in
+		Execution.log_run cfg
+		
+(*bon parentesage compelxe*)
+let (question1Demo2: unit -> Configuration.t) = fun () ->
+      let alphabet = Alphabet.make [B;Z;U;O;C] in  (*O pour open C pour close*)
+	let band1 = Band.make alphabet [Z;O;U;O;O;Z;C;U;U;C;U;C;U] (*bande a tester*)
+	and band2 = Band.make alphabet [B;B;B;B;B;B;B;B] (*bande de travail*)
+	and band3 = Band.make alphabet [B;B;B;B;B;B;B;B] in (*bande de travail*)
+	let cfg = Configuration.make Turing_Machine.test_parenthesage [ band1 ; band2 ; band3] in
+		Execution.log_run cfg
+		
+(*mauvais parentesage compelxe*)
+let (question1Demo3: unit -> Configuration.t) = fun () ->
+      let alphabet = Alphabet.make [B;Z;U;O;C] in  (*O pour open C pour close*)
+	let band1 = Band.make alphabet [Z;O;U;O;O;Z;C;U;U;C;U;U] (*bande a tester*)
+	and band2 = Band.make alphabet [B;B;B;B;B;B;B;B] (*bande de travail*)
+	and band3 = Band.make alphabet [B;B;B;B;B;B;B;B] in (*bande de travail*)
+	let cfg = Configuration.make Turing_Machine.test_parenthesage [ band1 ; band2 ; band3] in
+		Execution.log_run cfg
+
+(*mauvais parentesage*)
+let (question1Demo4: unit -> Configuration.t) = fun () ->
+      let alphabet = Alphabet.make [B;Z;U;O;C] in  (*O pour open C pour close*)
+	let band1 = Band.make alphabet [Z;O;U;Z] (*bande a tester*)
+	and band2 = Band.make alphabet [B;B;B;B;B;B;B;B] (*bande de travail*)
+	and band3 = Band.make alphabet [B;B;B;B;B;B;B;B] in (*bande de travail*)
+	let cfg = Configuration.make Turing_Machine.test_parenthesage [ band1 ; band2 ; band3] in
+		Execution.log_run cfg
+
+
 
 
 (* DEMO *)
@@ -97,15 +136,17 @@ let (demo: unit -> unit) = fun () ->
 	print_string "\n\n* DEMO * Demo.ml:\n\n" ;
 	List.iter (fun _ -> ())
 	  [ incr ()  ;
-	    decr1 () ;
+	   (* decr1 () ;
 	    decr2 () ;    
 	    incr_decr () ;
 	    gen_dup () ;
 	    gen_copy () ;    
 	    gen_reverse () ;
 	    gen_swap () ;
-	    xor () ;
-	    busy_beaver Turing_Machine.bb4
+	    xor () ; *)
+	    (*question1Demo1 ()*)
+	    question1Demo4 ()
+
            (* 
 	    * /!\  TERMINATING BUT EXTREMLY LONG COMPUTATIONS ... The sun will be dead before the end of BB6.
 	    *

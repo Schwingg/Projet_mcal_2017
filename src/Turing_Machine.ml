@@ -351,6 +351,50 @@ module Turing_Machine =
 	   ]
 	  }
 
+	  
+	  
+	  
+	  
+	  (*question 1 verification du bon parenthesage*)
+  
+  
+  
+  
+  
+    let (test_parenthesage:turing_machine) =
+      let init = nop.initial and accept = nop.accept and reject = State.reject in
+    let q = State.fresh_from init in                    
+      { nop with
+        nb_bands = 3 ; (*band 1 a tester band 2 et 3 en bande temporaires*)
+        name = "test_parenthesage" ;
+        transitions =
+        [
+         (*on va a la premiere parenthese ouvrante*)
+         (init, Action( Simultaneous [ RWM (Match (BUT O), No_Write, Right) ; RWM (Match ANY, No_Write, Here) ; RWM (Match ANY, No_Write, Here) ]), init) ;
+         (init, Action( Simultaneous [ RWM (Match (VAL O), No_Write, Right) ; RWM (Match ANY, Write O, Right) ; RWM (Match ANY, Write O, Here) ]), Q 2) ;
+	 
+         (*On avance jusque a la prochaine parenthese et on le recopie sur la deuxieme bande*)
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL S), No_Write, Right) ; RWM (Match ANY, Write S, Right) ; RWM (Match ANY, No_Write, Here) ]), Q 2) ;
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL X), No_Write, Right) ; RWM (Match ANY, Write X, Right) ; RWM (Match ANY, No_Write, Here) ]), Q 2) ;
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL L), No_Write, Right) ; RWM (Match ANY, Write L, Right) ; RWM (Match ANY, No_Write, Here) ]), Q 2) ;
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL U), No_Write, Right) ; RWM (Match ANY, Write U, Right) ; RWM (Match ANY, No_Write, Here) ]), Q 2) ;
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL Z), No_Write, Right) ; RWM (Match ANY, Write Z, Right) ; RWM (Match ANY, No_Write, Here) ]), Q 2) ;
+         
+         (*partenthese ouvrante a l'interieur *)
+         (*Pretty diplayB*)
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL O), No_Write, Right) ; RWM (Match ANY, Write O, Right) ; RWM (Match ANY, No_Write, Right) ]), Q 2) ; (*Parenthese O interne *)
+  
+         (*Parenthese fermante a l'interieur *)
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL C), No_Write, Right) ; RWM (Match ANY, Write C, Right) ; RWM (Match (BUT O), Write B, Left) ]), Q 2) ;
+         
+         (*fin du test de parenthesage   => parentesage OK *)
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL C), No_Write, Here) ; RWM (Match ANY, Write C, Here) ; RWM (Match (VAL O), Write B, Here) ]), accept) ;
+          
+         (*fin du test de parenthesage => parentesage pas OK *)
+         (Q 2, Action( Simultaneous [ RWM (Match(VAL B), No_Write, Here) ; RWM (Match ANY, No_Write, Here) ; RWM (Match ANY, No_Write, Here) ]), reject)
+       ]
+      }
+    
 	
 	    
   end)
