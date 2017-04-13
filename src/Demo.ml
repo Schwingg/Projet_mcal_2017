@@ -90,6 +90,17 @@ let (busy_beaver: Turing_Machine.t -> Configuration.t) = fun bb ->
 	    Execution.log_run cfg 
 	    
 	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    (*QUESTION 1*)
+	    
 (* bon parentesage simple*)
 let (question1Demo1: unit -> Configuration.t) = fun () ->
       let alphabet = Alphabet.make [B;Z;U;O;C] in  (*O pour open C pour close*)
