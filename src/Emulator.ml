@@ -288,25 +288,24 @@ struct
 
   (** MODIFIED 27/03/2107 *)
 
-(*attention peut etre que l'ordre des fonction n'est pas le bon*)
 
 let rec tradSym:encoding->Symbol.t->Symbol.t list (*Bits.t*)
   = fun encoding s ->
     match encoding with
-    |[]->failwith "msg"
+    |[]->failwith "erreur encoding"
     |(sym,vec)::suite->if(sym=s)then vec else (tradSym suite s)
 
 
 let rec traduire_SymList : encoding->Symbol.t list -> Symbol.t list
-	= fun encoding band ->
-		match band with
+	= fun encoding band -> band
+		(*match band with
 		| []->[]
-		| s::suite->(tradSym encoding s)@(traduire_SymList encoding suite)
+		| s::suite->(tradSym encoding s)@(traduire_SymList encoding suite)*)
 
 
-let traduire_band : encoding ->band->band=
-	fun encoding band ->
-		let heads = (tradSym encoding band.head)
+let traduire_band : encoding ->band->band
+  = fun encoding band -> band
+	(*	let heads = (tradSym encoding band.head)
 			in match heads with
 			|h::suite ->
 		{band with
@@ -314,16 +313,17 @@ let traduire_band : encoding ->band->band=
 			head = h;
 			right = suite @ traduire_SymList encoding band.right;
 
-		}
+		}*)
 
 
 
   let rec encode_with : encoding -> Band.t list -> Band.t list
   (* PROJET 2017: modifiez ce code -> *)
-    = fun encoding bandListInit ->
-      match bandListInit with
+    = fun encoding bandListInit -> bandListInit
+     (* match bandListInit with
       |[]->[]
       |b::suite-> (traduire_band encoding b)::(encode_with encoding suite )
+  *)
      (* (fun bands -> bands) *)
      
 
@@ -377,6 +377,22 @@ end
 (* DEMO *)
 
 open Alphabet
+(*Attention modifie*)
+(* let (demo: unit -> unit) = fun () ->
+  let alphabet = Alphabet.make [B;Z;U] in
+  let band = Band.make alphabet [U;U;Z;U] in
+  let tm = Turing_Machine.incr in
+  let cfg = Configuration.make tm [ band ] in
+  let e = Binary.build_encoding alphabet in (* Creation de l'encoding associe a l'alphabet alphabet*) 
+  let resultat = Binary.encode_with e [band;band] in
+  let _final_cfg = Simulator.log_run_using
+      ([ (* Split.simulator ; *)
+        (** MODIFIED 27/03/2107 *) Binary.make_simulator alphabet 
+      ],[])
+      cfg
+  in ()
+*)
+
 
 let (demo: unit -> unit) = fun () ->
   let alphabet = Alphabet.make [B;Z;U] in
